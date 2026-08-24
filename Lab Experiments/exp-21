@@ -1,0 +1,31 @@
+import math
+
+n = int(input("Enter number of contents: "))
+rounds = int(input("Enter number of rounds: "))
+
+rewards = [0] * n
+counts = [0] * n
+
+for i in range(rounds):
+    print("\nRound", i + 1)
+    
+    if i < n:
+        arm = i
+    else:
+        ucb = []
+        for j in range(n):
+            value = rewards[j] / counts[j] + math.sqrt(2 * math.log(i + 1) / counts[j])
+            ucb.append(value)
+        arm = ucb.index(max(ucb))
+
+    r = float(input("Enter reward for selected content: "))
+
+    rewards[arm] += r
+    counts[arm] += 1
+
+print("\nResults")
+for i in range(n):
+    print("Content", i + 1, "Selected:", counts[i], "times",
+          "Average Reward:", rewards[i] / counts[i])
+
+print("Best Content:", rewards.index(max(rewards)) + 1)
